@@ -1,6 +1,5 @@
 name: app
 description: "A new Flutter project."
-# The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
@@ -34,7 +33,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  flutter_svg: ^1.1.6
 
 dev_dependencies:
   flutter_test:
@@ -73,17 +71,12 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
+  # fonts:
     - family: Poppins
       fonts:
-        - asset: fonts/Poppins-Bold.ttf
-        - weight: 700
-        - asset: fonts/Poppins-Medium.ttf
-        - weight: 500
-        - asset: fonts/Poppins-Regular.ttf
-        - weight: 400
-        - asset: fonts/Poppins-SemiBold.ttf
-        - weight: 600
+        - assets: fonts/Poppins-Regular.ttf
+  #       - assets: fonts/Schyler-Italic.ttf
+  #         style: italic
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
