@@ -24,18 +24,6 @@ class HomePage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-            padding: EdgeInsets.only(left: 25),
-            child: Text(
-              "Category",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600),
-            )),
-        const SizedBox(
-          height: 15,
-        ),
         Container(
           height: 250,
           color: Colors.black,
