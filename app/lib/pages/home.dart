@@ -8,7 +8,53 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(),
+      body: Column(
+        children: [
+          _maintext(),
+          const SizedBox(
+            height: 25,
+          ),
+          _cards()
+        ],
+      ),
     );
+  }
+
+  Column _cards() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+            padding: EdgeInsets.only(left: 25),
+            child: Text(
+              "Category",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600),
+            )),
+        const SizedBox(
+          height: 15,
+        ),
+        Container(
+          height: 250,
+          color: Colors.black,
+          child: ListView.builder(itemBuilder: (context, index) {
+            return Container();
+          }),
+        )
+      ],
+    );
+  }
+
+  Padding _maintext() {
+    return const Padding(
+        padding: EdgeInsets.only(left: 25, top: 20, right: 25),
+        child: Text(
+          "Choose your sports facilities",
+          style: TextStyle(
+              color: Colors.black, fontSize: 24, fontWeight: FontWeight.w600),
+        ));
   }
 
   AppBar appBar() {
@@ -20,7 +66,7 @@ class HomePage extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       elevation: 0.0,
-      centerTitle: true,
+      centerTitle: false,
       actions: [
         GestureDetector(
             onTap: () {},
