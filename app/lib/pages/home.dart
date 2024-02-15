@@ -27,9 +27,6 @@ class HomePage extends StatelessWidget {
         Container(
           height: 250,
           color: Colors.black,
-          child: ListView.builder(itemBuilder: (context, index) {
-            return Container();
-          }),
         )
       ],
     );
@@ -62,14 +59,14 @@ class HomePage extends StatelessWidget {
               margin: const EdgeInsets.all(10),
               alignment: Alignment.center,
               width: 37,
+              decoration: BoxDecoration(
+                  color: const Color(0xffF7F8f8),
+                  borderRadius: BorderRadius.circular(10)),
               child: SvgPicture.asset(
                 'assets/icons/inbox-svgrepo-com.svg',
                 height: 20,
                 width: 18,
               ),
-              decoration: BoxDecoration(
-                  color: const Color(0xffF7F8f8),
-                  borderRadius: BorderRadius.circular(10)),
             ))
       ],
     );
