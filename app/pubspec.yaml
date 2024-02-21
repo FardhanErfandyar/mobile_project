@@ -61,6 +61,7 @@ flutter:
     - assets/icons/inbox-svgrepo-com.svg
     - assets/images/lines-football-field.jpg
     - assets/images/table-tennis.jpg
+    - assets/images/ssfix.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

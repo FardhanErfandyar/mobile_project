@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     _getcategories();
     return Scaffold(
       appBar: appBar(),
-      body: Column(
+      body: ListView(
         children: [
           _maintext(),
           const SizedBox(
@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
   AppBar appBar() {
     return AppBar(
       title: const Text(
-        "Viva Sports",
+        "Fields",
         style: TextStyle(
             color: Colors.black, fontSize: 19, fontWeight: FontWeight.bold),
       ),
