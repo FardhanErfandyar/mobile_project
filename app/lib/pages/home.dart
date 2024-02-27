@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     _getcategories();
     return Scaffold(
       appBar: appBar(),
-      body: Column(
+      body: ListView(
         children: [
           _maintext(),
           const SizedBox(
@@ -50,12 +50,11 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (context, index) {
               return Container(
                 height: 280,
-                width: 200,
+                width: 350,
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 child: Stack(
                   children: [
-                    // Image with shadow above it
                     ClipRRect(
                       borderRadius: BorderRadius.circular(15),
                       child: Image(
@@ -63,20 +62,6 @@ class _HomePageState extends State<HomePage> {
                         fit: BoxFit.cover,
                         width: double.infinity,
                         height: double.infinity,
-                      ),
-                    ),
-                    // Shadow
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.black.withOpacity(0.1),
-                            Colors.black,
-                          ],
-                        ),
                       ),
                     ),
                     Positioned(
@@ -96,29 +81,202 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         ),
+        SizedBox(height: 40.0),
+        const Padding(
+          padding: EdgeInsets.only(left: 16),
+          child: Text(
+            'Rekomendasi Lapangan',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+              fontFamily: 'Poppins',
+            ),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(left: 16),
+          child: Text(
+            'Temukan lapangan terbaik tim mu!',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+              fontFamily: 'Poppins',
+            ),
+          ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.only(left: 15),
+          child: Row(
+            children: [
+              Container(
+                margin: EdgeInsets.all(5),
+                child: Material(
+                  borderRadius: BorderRadius.circular(1),
+                  elevation: 2,
+                  child: Container(
+                    padding: EdgeInsets.all(14),
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/fields/Fivas.jpg',
+                          height: 150,
+                          width: 150,
+                          fit: BoxFit.fill,
+                        ),
+                        const Text(
+                          'Keputih',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                        const Text(
+                          'Fiva Futsal',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                        const Text(
+                          '10.00 - 22.00',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 10),
+              Material(
+                borderRadius: BorderRadius.circular(1),
+                elevation: 2,
+                child: Container(
+                  padding: EdgeInsets.all(14),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/fields/redd.jpg',
+                        height: 150,
+                        width: 150,
+                        fit: BoxFit.fill,
+                      ),
+                      const Text(
+                        'Tenggilis Mejoyo',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                      const Text(
+                        'Red Futsal',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                      const Text(
+                        '09.00 - 17.00',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(width: 15),
+              Material(
+                borderRadius: BorderRadius.circular(1),
+                elevation: 2,
+                child: Container(
+                  padding: EdgeInsets.all(14),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/fields/hokky.jpg',
+                        height: 150,
+                        width: 150,
+                        fit: BoxFit.fill,
+                      ),
+                      const Text(
+                        'Sukolilo',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                      const Text(
+                        'Hokky Futsal',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                      const Text(
+                        '07.00 - 23.59',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
 
-  Padding _maintext() {
-    return const Padding(
-        padding: EdgeInsets.only(left: 25, top: 25, right: 25),
-        child: Text(
-          "Choose your sports facilities",
-          style: TextStyle(
-              color: Colors.black, fontSize: 24, fontWeight: FontWeight.w600),
-        ));
+  Widget _maintext() {
+    return Padding(
+      padding: EdgeInsets.only(left: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            "Welcome!",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   AppBar appBar() {
     return AppBar(
       title: const Text(
-        "Viva Sports",
+        "Fields",
         style: TextStyle(
             color: Colors.black, fontSize: 19, fontWeight: FontWeight.bold),
       ),
       backgroundColor: Colors.white,
-      elevation: 0.0,
+      elevation: 0.5,
       centerTitle: false,
       actions: [
         GestureDetector(

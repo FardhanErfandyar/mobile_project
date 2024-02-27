@@ -10,9 +10,6 @@ class CategoryModel {
     categories.add(CategoryModel(
         name: "Futsal", image: "assets/images/lines-football-field.jpg"));
 
-    categories.add(CategoryModel(
-        name: "Tenis Meja", image: "assets/images/table-tennis.jpg"));
-
     return categories;
   }
 }
