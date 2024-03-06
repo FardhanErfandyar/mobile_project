@@ -1,4 +1,3 @@
-import 'package:app/pages/home.dart';
 import 'package:app/pages/sign_up.dart';
 import 'package:app/widgets/rounded_circular_button.dart';
 import 'package:app/widgets/rounded_text_form.dart';
