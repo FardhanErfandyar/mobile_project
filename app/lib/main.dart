@@ -4,6 +4,7 @@ import 'package:app/pages/sign_up.dart';
 import 'package:app/widgets/splash_screen.dart';
 import 'package:flutter/material.dart';
 
+
 void main() {
   runApp(MyApp());
 }

@@ -62,12 +62,10 @@ flutter:
     - assets/images/lines-football-field.jpg
     - assets/images/table-tennis.jpg
     - assets/images/ssfix.png
-<<<<<<< HEAD
     - assets/fields/Fivas.jpg
     - assets/fields/redd.jpg
     - assets/fields/hokky.jpg
-=======
->>>>>>> 1f71d11614e98fc05561cd7af2d44dbc20890bcb
+    - assets/icons/back-svgrepo-com.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
