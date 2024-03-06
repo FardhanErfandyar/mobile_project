@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:app/models/category_model.dart';
 import 'package:app/pages/homepagecontent.dart';
 import 'package:app/pages/inbox.dart';
