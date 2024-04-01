@@ -1,4 +1,3 @@
-import 'package:app/models/category_model.dart';
 import 'package:app/pages/homepagecontent.dart';
 import 'package:app/pages/inbox.dart';
 import 'package:flutter/material.dart';
@@ -52,14 +51,12 @@ class _HomePageState extends State<HomePage> {
       ),
       backgroundColor: Colors.white,
       elevation: 0.5,
-      centerTitle: false,
       actions: [
         GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Inbox()),
-              );
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => Inbox()),
+                  (Route<dynamic> route) => false);
             },
             child: Container(
               margin: const EdgeInsets.all(10),

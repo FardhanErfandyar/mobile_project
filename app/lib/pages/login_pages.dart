@@ -1,7 +1,11 @@
+import 'package:app/pages/forgot_password.dart';
+import 'package:app/pages/home.dart';
 import 'package:app/pages/sign_up.dart';
 import 'package:app/widgets/rounded_circular_button.dart';
-import 'package:app/widgets/rounded_text_form.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -9,6 +13,41 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  String email = "";
+  String password = "";
+
+  TextEditingController emailcontroller = new TextEditingController();
+  TextEditingController passwordcontroller = new TextEditingController();
+
+  final _formkey = GlobalKey<FormState>();
+
+  userLogin() async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => HomePage()),
+          (Route<dynamic> route) => false);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.amber,
+            content: Text(
+              'Akun belum terdaftar',
+              style: TextStyle(fontSize: 20),
+            )));
+      } else if (e.code == 'wrong-password') {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Colors.amber,
+          content: Text(
+            'Password salah',
+            style: TextStyle(fontSize: 20),
+          ),
+        ));
+      }
+    }
+  }
+
   bool obscureText = true;
   @override
   Widget build(BuildContext context) {
@@ -74,34 +113,83 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Masukkan Email";
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Masukkan Password";
+    }
+    return null;
+  }
+
   Widget _formField(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.22,
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          RoundedTextForm(
-            prefixIcon: Icons.email_outlined,
-            hintText: "Username",
-          ),
-          RoundedTextForm(
-            prefixIcon: Icons.lock_outlined,
-            hintText: "Password",
-            obscureText: obscureText,
-            hasSuffix: true,
-            onPressed: () {
-              setState(() {
-                obscureText = !obscureText;
-              });
-            },
-          ),
-          Text(
-            "Forgot Password?",
-            style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 15),
-          ),
-        ],
+      child: Form(
+        key: _formkey,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            TextFormField(
+              validator: validateEmail,
+              controller: emailcontroller,
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  color: Colors.black,
+                ),
+                hintText: "Email",
+              ),
+            ),
+            TextFormField(
+              validator: validatePassword,
+              controller: passwordcontroller,
+              obscureText: obscureText,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.lock_outlined),
+                hintText: "Password",
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    obscureText ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      obscureText = !obscureText;
+                    });
+                  },
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ForgotPassword()));
+              },
+              child: Text(
+                "Forgot Password?",
+                style: TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                    (Route<dynamic> route) => false);
+              },
+              child: Text("Sign as a Guest"),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -112,11 +200,36 @@ class _LoginPageState extends State<LoginPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,
-          height: MediaQuery.of(context).size.height * 0.06,
-          child: RoundedCircularButton(
-            text: "Sign In",
+        ElevatedButton(
+          onPressed: () {
+            if (_formkey.currentState!.validate()) {
+              setState(() {
+                email = emailcontroller.text;
+                password = passwordcontroller.text;
+              });
+            }
+
+            userLogin();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 102, 102, 102),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: MediaQuery.of(context).size.height * 0.06,
+            child: const Center(
+              child: Text(
+                "Sign In",
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Poppins',
+                    color: Colors.white),
+              ),
+            ),
           ),
         ),
         Padding(

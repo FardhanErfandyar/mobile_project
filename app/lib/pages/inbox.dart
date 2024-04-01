@@ -21,10 +21,9 @@ class _InboxState extends State<Inbox> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                  );
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                      (Route<dynamic> route) => false);
                 },
                 child: Container(
                   margin: const EdgeInsets.all(10),

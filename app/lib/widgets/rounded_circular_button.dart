@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
-class RoundedCircularButton extends StatelessWidget {
+class RoundedCircularButton extends StatefulWidget {
   final String text;
 
   const RoundedCircularButton({
     super.key,
     required this.text,
+    required Null Function() onPressed,
   });
 
   @override
+  State<RoundedCircularButton> createState() => _RoundedCircularButtonState();
+}
+
+class _RoundedCircularButtonState extends State<RoundedCircularButton> {
+  @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        Navigator.pushReplacementNamed(context, '/');
-      },
+    return TextButton(
+      onPressed: () {},
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color.fromARGB(255, 102, 102, 102),
         shape: RoundedRectangleBorder(
@@ -23,7 +27,7 @@ class RoundedCircularButton extends StatelessWidget {
         ),
       ),
       child: Text(
-        text,
+        widget.text,
         style: TextStyle(
           color: Colors.white,
           fontSize: 20,

@@ -1,7 +1,10 @@
 import 'package:app/pages/home.dart';
 import 'package:app/widgets/rounded_circular_button.dart';
 import 'package:app/widgets/rounded_text_form.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -9,10 +12,46 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpLauncher extends State<SignUp> {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController reenterPasswordController = TextEditingController();
+  String email = "";
+  String password = "";
+  String reenterPassword = "";
+
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController passwordController = new TextEditingController();
+  TextEditingController reenterPasswordController = new TextEditingController();
   bool obscureText = true;
+
+  final _formkey = GlobalKey<FormState>();
+
+  registration() async {
+    if (password != null &&
+        emailController.text != "" &&
+        passwordController.text != "" &&
+        reenterPasswordController.text != "") {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+          'Sign Up berhasil',
+          style: TextStyle(fontSize: 20.0),
+        )));
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => HomePage()),
+            (Route<dynamic> route) => false);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'email-already-in-use') {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.amber,
+              content: Text(
+                'Akun sudah terdaftar',
+                style: TextStyle(fontSize: 20, fontFamily: 'Poppins'),
+              )));
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,10 +94,34 @@ class _SignUpLauncher extends State<SignUp> {
     );
   }
 
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Masukkan Email";
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Masukkan Password";
+    }
+    return null;
+  }
+
+  String? validateReenterPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Masukkan Password ulang";
+    }
+    if (value != passwordController.text) {
+      return "Password tidak sama";
+    }
+    return null;
+  }
+
   Widget _SignUp(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 0.75,
+      height: MediaQuery.of(context).size.height * 0.70,
       child: Form(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
@@ -78,66 +141,107 @@ class _SignUpLauncher extends State<SignUp> {
 
   Widget _formField(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.25,
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          RoundedTextForm(
-            prefixIcon: Icons.email_outlined,
-            hintText: "Username",
-          ),
-          RoundedTextForm(
-            prefixIcon: Icons.lock_outlined,
-            hintText: "Password",
-            obscureText: obscureText,
-            hasSuffix: true,
-            onPressed: () {
-              setState(() {
-                obscureText = !obscureText;
-              });
-            },
-          ),
-          RoundedTextForm(
-            prefixIcon: Icons.lock_person_outlined,
-            hintText: "Re-enter your password",
-            obscureText: obscureText,
-          ),
-        ],
+      height: MediaQuery.of(context).size.height * 0.28,
+      child: Form(
+        key: _formkey,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            TextFormField(
+              validator: validateEmail,
+              controller: emailController,
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  color: Colors.black,
+                ),
+                hintText: "Email",
+              ),
+            ),
+            TextFormField(
+              validator: validatePassword,
+              controller: passwordController,
+              obscureText: obscureText,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.lock_outlined),
+                hintText: "Password",
+                suffixIcon: IconButton(
+                  icon: Icon(
+                      obscureText ? Icons.visibility : Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      obscureText = !obscureText;
+                    });
+                  },
+                ),
+              ),
+            ),
+            TextFormField(
+              validator: validateReenterPassword,
+              controller: reenterPasswordController,
+              obscureText: obscureText,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.lock_person_outlined),
+                hintText: "Re-enter your password",
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   void onSignUpPressed() {
-    if (passwordController.text == reenterPasswordController.text) {
-    } else {}
+    if (_formkey.currentState!.validate()) {
+      setState(() {
+        email = emailController.text;
+        password = passwordController.text;
+        reenterPassword = reenterPasswordController.text;
+      });
+      registration();
+    }
   }
 
   Widget _bottomButtons(BuildContext context) {
-    return Builder(
-      builder: (BuildContext context) {
-        return Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage()));
-              },
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: MediaQuery.of(context).size.height * 0.06,
-                child: const RoundedCircularButton(
-                  text: "Sign Up",
-                ),
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            if (_formkey.currentState!.validate()) {
+              setState(() {
+                email = emailController.text;
+                password = passwordController.text;
+                reenterPassword = reenterPasswordController.text;
+              });
+              registration();
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 102, 102, 102),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: MediaQuery.of(context).size.height * 0.06,
+            child: const Center(
+              child: Text(
+                "Sign Up",
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
               ),
             ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
 }

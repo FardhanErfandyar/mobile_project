@@ -6,20 +6,24 @@ class RoundedTextForm extends StatelessWidget {
   final bool obscureText;
   final bool hasSuffix;
   final VoidCallback? onPressed;
+  final TextEditingController controller;
 
-  const RoundedTextForm(
-      {super.key,
-      required this.prefixIcon,
-      required this.hintText,
-      this.obscureText = false,
-      this.hasSuffix = false,
-      this.onPressed});
+  const RoundedTextForm({
+    Key? key,
+    required this.prefixIcon,
+    required this.hintText,
+    this.obscureText = false,
+    this.hasSuffix = false,
+    this.onPressed,
+    required this.controller,
+    required String? Function(dynamic value) validator,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.85,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
             color: Color.fromRGBO(67, 71, 77, 0.08),
@@ -31,35 +35,37 @@ class RoundedTextForm extends StatelessWidget {
       ),
       child: Center(
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(
               Radius.circular(100),
             ),
           ),
           child: TextFormField(
+            controller: controller,
             obscureText: obscureText,
             decoration: InputDecoration(
-                suffixIcon: hasSuffix
-                    ? IconButton(
-                        onPressed: onPressed,
-                        icon: Icon(obscureText
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                      )
-                    : null,
-                prefixIcon: Icon(
-                  prefixIcon,
-                  color: Colors.blue,
-                ),
-                border: const OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                ),
-                hintText: hintText,
-                hintStyle: TextStyle(
-                  fontSize: 10,
-                  color: Color.fromRGBO(131, 143, 160, 100),
-                )),
+              prefixIcon: Icon(
+                prefixIcon,
+                color: Colors.blue,
+              ),
+              suffixIcon: hasSuffix
+                  ? IconButton(
+                      onPressed: onPressed,
+                      icon: Icon(
+                        obscureText ? Icons.visibility : Icons.visibility_off,
+                      ),
+                    )
+                  : null,
+              hintText: hintText,
+              hintStyle: TextStyle(
+                fontSize: 10,
+                color: Color.fromRGBO(131, 143, 160, 100),
+              ),
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+              ),
+            ),
           ),
         ),
       ),
