@@ -1,7 +1,7 @@
 import 'package:app/pages/forgot_password.dart';
 import 'package:app/pages/home.dart';
+import 'package:app/pages/homepagecontent.dart';
 import 'package:app/pages/sign_up.dart';
-import 'package:app/widgets/rounded_circular_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Text(
               "Sign In",
               style: TextStyle(
-                color: Colors.black,
+                color: Color.fromARGB(255, 251, 168, 52),
                 fontWeight: FontWeight.w600,
                 fontSize: 30,
               ),
@@ -180,14 +180,21 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+            const SizedBox(height: 10),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                    (Route<dynamic> route) => false);
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(),
+                  ),
+                  (Route<dynamic> route) => false,
+                );
               },
-              child: Text("Sign as a Guest"),
-            ),
+              child: const Text(
+                "Sign In As a Guest",
+                style: TextStyle(color: Colors.black, fontSize: 14),
+              ),
+            )
           ],
         ),
       ),
@@ -212,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
             userLogin();
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 102, 102, 102),
+            backgroundColor: const Color.fromARGB(255, 251, 168, 52),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
             ),
@@ -247,7 +254,7 @@ class _LoginPageState extends State<LoginPage> {
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
-                color: Color.fromARGB(255, 102, 102, 102),
+                color: Colors.black,
               ),
             ),
           ),

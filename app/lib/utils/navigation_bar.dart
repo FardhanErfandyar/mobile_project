@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
@@ -21,6 +22,12 @@ class CustomBottomNavigationBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(Icons.search),
           label: 'Search',
+        ),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.add_box_rounded), label: "Add"),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.post_add_rounded),
+          label: 'Post',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_2),

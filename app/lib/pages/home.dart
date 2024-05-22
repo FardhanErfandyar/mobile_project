@@ -1,5 +1,8 @@
 import 'package:app/pages/homepagecontent.dart';
 import 'package:app/pages/inbox.dart';
+import 'package:app/pages/profile.dart';
+import 'package:app/post/add_field.dart';
+import 'package:app/post/post_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../utils/navigation_bar.dart';
@@ -37,8 +40,12 @@ class _HomePageState extends State<HomePage> {
         return HomePageContent();
       case 1:
         return SearchPageContent();
+      case 2:
+        return Addfield();
+      case 3:
+        return PostfieldContent();
       default:
-        return Container();
+        return ProfilePageContent();
     }
   }
 

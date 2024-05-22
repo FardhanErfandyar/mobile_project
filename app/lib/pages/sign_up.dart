@@ -1,6 +1,7 @@
 import 'package:app/pages/home.dart';
 import 'package:app/widgets/rounded_circular_button.dart';
 import 'package:app/widgets/rounded_text_form.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,25 +13,42 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpLauncher extends State<SignUp> {
+  String username = "";
   String email = "";
   String password = "";
   String reenterPassword = "";
 
+  TextEditingController usernameController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController reenterPasswordController = new TextEditingController();
   bool obscureText = true;
+  final firestore = FirebaseFirestore.instance;
+  var currentUser = FirebaseAuth.instance.currentUser;
 
   final _formkey = GlobalKey<FormState>();
 
   registration() async {
     if (password != null &&
+        usernameController.text != "" &&
         emailController.text != "" &&
         passwordController.text != "" &&
         reenterPasswordController.text != "") {
+      // create the user
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
+
+        // create new document for cloud firestore
+        FirebaseFirestore.instance
+            .collection("Users")
+            .doc(userCredential.user!.email)
+            .set({
+          'username': usernameController.text,
+          'email': emailController.text,
+          'uid': userCredential.user!.uid
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text(
           'Sign Up berhasil',
@@ -83,7 +101,7 @@ class _SignUpLauncher extends State<SignUp> {
             child: Text(
               "Sign Up!",
               style: TextStyle(
-                color: Colors.black,
+                color: Color.fromARGB(255, 251, 168, 52),
                 fontWeight: FontWeight.w600,
                 fontSize: 35,
               ),
@@ -92,6 +110,13 @@ class _SignUpLauncher extends State<SignUp> {
         ],
       ),
     );
+  }
+
+  String? validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Masukkan Username";
+    }
+    return null;
   }
 
   String? validateEmail(String? value) {
@@ -150,6 +175,17 @@ class _SignUpLauncher extends State<SignUp> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             TextFormField(
+              validator: validateUsername,
+              controller: usernameController,
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.account_circle_rounded,
+                  color: Colors.black,
+                ),
+                hintText: "Username",
+              ),
+            ),
+            TextFormField(
               validator: validateEmail,
               controller: emailController,
               decoration: InputDecoration(
@@ -193,17 +229,6 @@ class _SignUpLauncher extends State<SignUp> {
     );
   }
 
-  void onSignUpPressed() {
-    if (_formkey.currentState!.validate()) {
-      setState(() {
-        email = emailController.text;
-        password = passwordController.text;
-        reenterPassword = reenterPasswordController.text;
-      });
-      registration();
-    }
-  }
-
   Widget _bottomButtons(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.max,
@@ -214,6 +239,7 @@ class _SignUpLauncher extends State<SignUp> {
           onPressed: () {
             if (_formkey.currentState!.validate()) {
               setState(() {
+                username = usernameController.text;
                 email = emailController.text;
                 password = passwordController.text;
                 reenterPassword = reenterPasswordController.text;
@@ -222,7 +248,7 @@ class _SignUpLauncher extends State<SignUp> {
             }
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 102, 102, 102),
+            backgroundColor: const Color.fromARGB(255, 251, 168, 52),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
             ),
